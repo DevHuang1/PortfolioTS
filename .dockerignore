@@ -1,0 +1,12 @@
+.git
+.gitignore
+.next
+.vscode
+node_modules
+npm-debug.log*
+.DS_Store
+*.tsbuildinfo
+.env*.local
+README.md
+Thuta_Sitt_CV(1).docx
+public/images/IMG_*
