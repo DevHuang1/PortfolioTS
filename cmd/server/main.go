@@ -203,7 +203,9 @@ func setSecurityAndCacheHeaders(w http.ResponseWriter, urlPath, filePath string)
 	case strings.HasPrefix(urlPath, "/_next/static/"):
 		w.Header().Set("Cache-Control", "public, max-age=31536000, immutable")
 	case strings.HasPrefix(urlPath, "/certificates/"),
-		strings.HasPrefix(urlPath, "/cv/"),
+		strings.HasPrefix(urlPath, "/spherex-previews/"):
+		w.Header().Set("Cache-Control", "public, max-age=2592000, stale-while-revalidate=86400")
+	case strings.HasPrefix(urlPath, "/cv/"),
 		strings.HasPrefix(urlPath, "/images/"):
 		w.Header().Set("Cache-Control", "public, max-age=86400")
 	case strings.HasSuffix(filePath, ".html"):

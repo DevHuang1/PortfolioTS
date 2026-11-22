@@ -109,6 +109,8 @@ export default function CredentialsSection({
 }) {
   const [selected, setSelected] = useState<SelectedCredential | null>(null);
   const [closing, setClosing] = useState(false);
+  const [previewLoaded, setPreviewLoaded] = useState(false);
+  const [previewFailed, setPreviewFailed] = useState(false);
   const [activeCategory, setActiveCategory] = useState<string>("ALL");
   const [query, setQuery] = useState<string>("");
 
@@ -116,6 +118,17 @@ export default function CredentialsSection({
   const modalRef = useRef<HTMLDivElement | null>(null);
   const closeButtonRef = useRef<HTMLButtonElement | null>(null);
   const wasOpenRef = useRef(false);
+  const prefetchedRef = useRef<Set<string>>(new Set());
+
+  const prefetchPreview = useCallback((fName?: string) => {
+    if (!fName || typeof window === "undefined") return;
+    const url = `/certificates/previews/${encodeURIComponent(fName)}.webp`;
+    if (prefetchedRef.current.has(url)) return;
+    prefetchedRef.current.add(url);
+    const img = new window.Image();
+    img.decoding = "async";
+    img.src = url;
+  }, []);
 
   const closeModal = useCallback(async () => {
     const modal = modalRef.current;
@@ -216,6 +229,9 @@ export default function CredentialsSection({
   const isImage = fileName?.toLowerCase().endsWith(".png");
   const fileSrc = fileName
     ? `/certificates/${encodeURIComponent(fileName)}`
+    : "";
+  const previewSrc = fileName
+    ? `/certificates/previews/${encodeURIComponent(fileName)}.webp`
     : "";
   const isSingleGroupView = visibleGroups.length === 1;
 
@@ -364,8 +380,16 @@ export default function CredentialsSection({
                         <li key={`${group.category}-${cred.title}`}>
                           <button
                             type="button"
+                            onMouseEnter={() => {
+                              if (hasFile) prefetchPreview(cred.fileName);
+                            }}
+                            onFocus={() => {
+                              if (hasFile) prefetchPreview(cred.fileName);
+                            }}
                             onClick={(event) => {
                               openerRef.current = event.currentTarget;
+                              setPreviewLoaded(false);
+                              setPreviewFailed(false);
                               setSelected({
                                 credential: cred,
                                 accent: group.accent,
@@ -588,12 +612,35 @@ export default function CredentialsSection({
 
               {fileName ? (
                 <div className="space-y-2.5">
-                  <div className="h-[min(360px,45vh)] w-full overflow-hidden border-2 border-slate-700 bg-[#0d1017] sm:h-[min(430px,50vh)]">
-                    {isImage ? (
+                  <div className="relative h-[min(360px,45vh)] w-full overflow-hidden border-2 border-slate-700 bg-[#0d1017] sm:h-[min(430px,50vh)]">
+                    {!previewLoaded && !previewFailed ? (
+                      <div
+                        aria-hidden="true"
+                        className="font-mono-tech absolute inset-0 flex items-center justify-center bg-[#0d1017] text-[10px] font-bold uppercase tracking-widest text-slate-400"
+                      >
+                        Loading verified preview...
+                      </div>
+                    ) : null}
+
+                    {!previewFailed ? (
+                      <img
+                        key={previewSrc}
+                        src={previewSrc}
+                        alt={selected.credential.title}
+                        decoding="async"
+                        fetchPriority="high"
+                        onLoad={() => setPreviewLoaded(true)}
+                        onError={() => setPreviewFailed(true)}
+                        className={`h-full w-full object-contain p-1.5 transition-opacity duration-150 ${
+                          previewLoaded ? "opacity-100" : "opacity-0"
+                        }`}
+                      />
+                    ) : isImage ? (
                       <img
                         src={fileSrc}
                         alt={selected.credential.title}
-                        loading="lazy"
+                        decoding="async"
+                        fetchPriority="high"
                         className="h-full w-full object-contain"
                       />
                     ) : (
@@ -606,7 +653,7 @@ export default function CredentialsSection({
                   </div>
                   {!isImage ? (
                     <p className="font-mono-tech text-[10px] leading-relaxed text-slate-400">
-                      On mobile browsers that block embedded PDF frames, use{" "}
+                      Instant WebP preview shown above — use{" "}
                       <a
                         href={fileSrc}
                         target="_blank"
@@ -623,7 +670,7 @@ export default function CredentialsSection({
                       >
                         Download
                       </a>{" "}
-                      above.
+                      for the full original document.
                     </p>
                   ) : null}
                 </div>

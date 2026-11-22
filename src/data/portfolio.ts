@@ -378,6 +378,7 @@ export const PROJECTS: ProjectItem[] = [
     eventOrContext:
       "NASA Space Apps Challenge 2026 – Yangon • Youth Scientific Excellence Award (Myanmar Space Agency)",
     repoUrl: "https://github.com/DevHuang1/lunaspis",
+    liveUrl: "https://lunaspis.com",
     metrics: [
       { label: "Award", value: "Youth Sci.", note: "Myanmar Space Agency" },
       { label: "Co-Op Crew", value: "6 Players", note: "Socket.IO + WebRTC" },

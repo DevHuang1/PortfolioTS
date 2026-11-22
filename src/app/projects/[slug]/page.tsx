@@ -11,11 +11,13 @@ import {
   GitBranch,
   Layers,
   ListChecks,
+  Play,
   ShieldAlert,
   Star,
   Target,
 } from "lucide-react";
 import NodeForgeTerminal from "@/components/NodeForgeTerminal";
+import ProjectDemo from "@/components/ProjectDemos";
 import SystemDiagram from "@/components/SystemDiagram";
 import { PROFILE, PROJECTS, type ProjectItem } from "@/data/portfolio";
 
@@ -372,7 +374,24 @@ export default async function ProjectDetailPage({
         />
       </section>
 
-      {project.id === "nodeforge" ? <NodeForgeTerminal /> : null}
+      {project.id === "nodeforge" ? (
+        <NodeForgeTerminal />
+      ) : [
+          "fraudshield",
+          "beacon",
+          "precision-irrigation-ml",
+          "skydetective",
+        ].includes(project.id) ? (
+        <section className="brutal-card space-y-4 p-6">
+          <PanelHeading
+            index="03B"
+            title="Interactive Sandbox"
+            icon={Play}
+            accent={project.accent}
+          />
+          <ProjectDemo projectId={project.id} />
+        </section>
+      ) : null}
 
       <section className="brutal-card space-y-4 p-6">
         <PanelHeading

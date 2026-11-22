@@ -21,15 +21,17 @@ import {
   Layers,
   Lock,
   Monitor,
+  Play,
   RotateCw,
   ShieldAlert,
   Star,
 } from "lucide-react";
+import ProjectDemo, { hasDemo } from "@/components/ProjectDemos";
 import SystemDiagram from "@/components/SystemDiagram";
 import type { ProjectCategory, ProjectItem } from "@/data/portfolio";
 
 type FilterKey = "ALL" | "FEATURED" | ProjectCategory;
-type ViewportMode = "preview" | "architecture" | "live";
+type ViewportMode = "preview" | "architecture" | "demo" | "live";
 
 const ACCENT_MAP = {
   cyan: {
@@ -84,6 +86,7 @@ export default function ArchitectureInspector({
   const tablistRef = useRef<HTMLDivElement | null>(null);
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const copyTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const isInitialMountRef = useRef(true);
 
   const filterCounts = useMemo<Record<FilterKey, number>>(
     () => ({
@@ -111,15 +114,32 @@ export default function ArchitectureInspector({
     [filteredProjects, selectedId, projects]
   );
 
-  // Scroll the selected Chrome tab cleanly into view inside the tab strip
+  // Scroll the selected Chrome tab cleanly into view horizontally inside the tab strip
+  // without scrolling the page vertically on initial mount or tab change.
   useEffect(() => {
+    if (isInitialMountRef.current) {
+      isInitialMountRef.current = false;
+      return;
+    }
     if (!active) return;
+    const scroller = tablistRef.current;
     const idx = filteredProjects.findIndex((p) => p.id === active.id);
-    if (idx < 0) return;
-    tabRefs.current[idx]?.scrollIntoView({
-      block: "nearest",
-      inline: "nearest",
-    });
+    const tab = idx >= 0 ? tabRefs.current[idx] : null;
+    if (!scroller || !tab) return;
+
+    const tabLeft = tab.offsetLeft;
+    const tabRight = tabLeft + tab.offsetWidth;
+    const viewLeft = scroller.scrollLeft;
+    const viewRight = viewLeft + scroller.clientWidth;
+
+    if (tabLeft < viewLeft) {
+      scroller.scrollTo({ left: tabLeft, behavior: "smooth" });
+    } else if (tabRight > viewRight) {
+      scroller.scrollTo({
+        left: tabRight - scroller.clientWidth,
+        behavior: "smooth",
+      });
+    }
   }, [active, filteredProjects]);
 
   // IntersectionObserver fallback for horizontal edge fade hints when scroll() timeline is unsupported
@@ -176,12 +196,19 @@ export default function ArchitectureInspector({
   );
   const omniboxUrl = active.liveUrl ?? active.repoUrl;
   const effectiveMode: ViewportMode =
-    viewportMode === "live" && !active.liveUrl ? "preview" : viewportMode;
+    viewportMode === "live" && !active.liveUrl
+      ? "preview"
+      : viewportMode === "demo" && !hasDemo(active.id)
+        ? "preview"
+        : viewportMode;
 
   const selectProject = (nextProject: ProjectItem) => {
     setSelectedId(nextProject.id);
     setCopiedUrl(false);
     if (!nextProject.liveUrl && viewportMode === "live") {
+      setViewportMode("preview");
+    }
+    if (!hasDemo(nextProject.id) && viewportMode === "demo") {
       setViewportMode("preview");
     }
   };
@@ -447,6 +474,21 @@ export default function ArchitectureInspector({
             <Layers className="h-3 w-3" aria-hidden="true" />
             Architecture
           </button>
+          {hasDemo(active.id) ? (
+            <button
+              type="button"
+              aria-pressed={effectiveMode === "demo"}
+              onClick={() => setViewportMode("demo")}
+              className={`font-mono-tech inline-flex cursor-pointer items-center gap-1 border px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider transition ${
+                effectiveMode === "demo"
+                  ? "border-[#fb7185] bg-[#fb7185] text-[#0d1017]"
+                  : "border-slate-700 bg-[#0d1017] text-slate-300 hover:border-slate-500"
+              }`}
+            >
+              <Play className="h-3 w-3" aria-hidden="true" />
+              Demo
+            </button>
+          ) : null}
           {active.liveUrl ? (
             <button
               type="button"
@@ -498,6 +540,8 @@ export default function ArchitectureInspector({
               />
             </div>
           </div>
+        ) : effectiveMode === "demo" ? (
+          <ProjectDemo projectId={active.id} />
         ) : effectiveMode === "architecture" ? (
           <div className="space-y-6">
             <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-4">
