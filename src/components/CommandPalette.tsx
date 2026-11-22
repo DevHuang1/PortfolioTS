@@ -110,6 +110,11 @@ export function CommandPaletteShell({
   const copyTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const allItems = useMemo<PaletteItem[]>(() => {
+    const totalCredentials = CREDENTIALS.reduce(
+      (sum, group) => sum + group.items.length,
+      0
+    );
+
     const sections: PaletteItem[] = [
       {
         id: "sec-inspector",
@@ -170,7 +175,7 @@ export function CommandPaletteShell({
       {
         id: "sec-credentials",
         kind: "SECTION",
-        label: "Section // Awards & International Certificates Vault (37 Entries)",
+        label: `Section // Awards & International Certificates Vault (${totalCredentials} Entries)`,
         sub: "NASA Space Apps Award, UNESCO, ASEAN GeoAI, AWS, DeepLearning.AI, IBM, ITPEC",
         keywords: "section credentials certificates awards badges verification",
         href: "/#credentials",
@@ -179,8 +184,8 @@ export function CommandPaletteShell({
         id: "sec-contact",
         kind: "SECTION",
         label: "Section // Contact & Open Channel",
-        sub: `${PROFILE.links.rawEmail} • ${PROFILE.links.telegram} • ${PROFILE.location}`,
-        keywords: "section contact email phone telegram github linkedin footer",
+        sub: `${PROFILE.links.rawEmail} • ${PROFILE.links.bibiversusEmail} • ${PROFILE.location}`,
+        keywords: "section contact email github linkedin footer",
         href: "/#contact",
       },
     ];

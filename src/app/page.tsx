@@ -14,8 +14,6 @@ import {
   Linkedin,
   Mail,
   MapPin,
-  Phone,
-  Send,
   Trophy,
 } from "lucide-react";
 import ArchitectureInspector from "@/components/ArchitectureInspector";
@@ -85,7 +83,6 @@ function getPortraitSrc(): string | null {
 export default function HomePage() {
   const availableFiles = getAvailableCertificates();
   const portraitSrc = getPortraitSrc();
-  const phoneHref = `tel:${PROFILE.links.phone.replace(/\s+/g, "")}`;
   const totalCredentialCount = CREDENTIALS.reduce(
     (sum, group) => sum + group.items.length,
     0
@@ -221,22 +218,6 @@ export default function HomePage() {
               >
                 <FileText className="h-4 w-4 text-[#facc15]" aria-hidden="true" />
                 CV DOCX
-              </a>
-              <a
-                href={PROFILE.links.telegramUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="brutal-btn brutal-btn-cyan font-mono-tech inline-flex items-center gap-1.5 bg-[#0d1017] px-3.5 py-2.5 text-xs font-bold uppercase text-slate-200"
-              >
-                <Send className="h-3.5 w-3.5 text-[#2dd4bf]" aria-hidden="true" />
-                {PROFILE.links.telegram}
-              </a>
-              <a
-                href={phoneHref}
-                className="brutal-btn brutal-btn-coral font-mono-tech inline-flex items-center gap-1.5 bg-[#0d1017] px-3.5 py-2.5 text-xs font-bold uppercase text-slate-200"
-              >
-                <Phone className="h-3.5 w-3.5 text-[#fb7185]" aria-hidden="true" />
-                {PROFILE.links.phone}
               </a>
             </div>
 
@@ -474,32 +455,6 @@ export default function HomePage() {
                 </p>
                 <p className="font-mono-tech mt-1 break-all text-xs font-bold text-[#2dd4bf]">
                   {PROFILE.links.bibiversusEmail}
-                </p>
-              </a>
-
-              <a
-                href={phoneHref}
-                className="min-w-0 border border-slate-700 bg-[#0d1017] p-3 transition hover:border-[#fb7185]"
-              >
-                <p className="font-mono-tech text-[9px] font-bold uppercase tracking-wider text-slate-400">
-                  Phone / Direct
-                </p>
-                <p className="font-mono-tech mt-1 text-xs font-bold text-white">
-                  {PROFILE.links.phone}
-                </p>
-              </a>
-
-              <a
-                href={PROFILE.links.telegramUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="min-w-0 border border-slate-700 bg-[#0d1017] p-3 transition hover:border-[#2dd4bf]"
-              >
-                <p className="font-mono-tech text-[9px] font-bold uppercase tracking-wider text-slate-400">
-                  Telegram
-                </p>
-                <p className="font-mono-tech mt-1 break-all text-xs font-bold text-white">
-                  {PROFILE.links.telegram}
                 </p>
               </a>
             </div>

@@ -86,7 +86,6 @@ const personJsonLd = {
   description: PROFILE.summary,
   url: siteUrl,
   email: PROFILE.links.email,
-  telephone: PROFILE.links.phone,
   address: {
     "@type": "PostalAddress",
     addressLocality: "Yangon",
@@ -102,7 +101,6 @@ const personJsonLd = {
   sameAs: [
     PROFILE.links.github,
     PROFILE.links.linkedin,
-    PROFILE.links.telegramUrl,
   ],
 };
 

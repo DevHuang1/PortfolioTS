@@ -72,7 +72,6 @@ export async function GET() {
         bibiversusEmail: PROFILE.links.bibiversusEmail,
         github: PROFILE.links.github,
         linkedin: PROFILE.links.linkedin,
-        telegram: PROFILE.links.telegram,
       },
       activeVentures: EXPERIENCE.filter((item) =>
         item.role.toLowerCase().includes("founder")

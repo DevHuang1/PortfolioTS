@@ -31,8 +31,6 @@ export async function GET() {
     "## Contact & Links",
     `- Primary Email: ${PROFILE.links.rawEmail} (${PROFILE.links.email})`,
     `- BibiVersus Email: ${PROFILE.links.bibiversusEmail}`,
-    `- Phone: ${PROFILE.links.phone}`,
-    `- Telegram: ${PROFILE.links.telegram} (${PROFILE.links.telegramUrl})`,
     `- GitHub: ${PROFILE.links.github}`,
     `- LinkedIn: ${PROFILE.links.linkedin}`,
     `- CV (PDF): ${PROFILE.links.cvPdf}`,

@@ -35,7 +35,7 @@ function buildWhoamiLines(): string[] {
     `Education: ${degree ? `${degree.program} @ ${degree.institution} (${degree.period})` : "UIT Yangon"}`,
     `Location:  ${PROFILE.location} (${PROFILE.timezone} / ${PROFILE.timezoneLabel})`,
     `Email:     ${PROFILE.links.rawEmail} | ${PROFILE.links.bibiversusEmail}`,
-    `Channels:  Telegram ${PROFILE.links.telegram} | GitHub ${PROFILE.links.github}`,
+    `Channels:  GitHub ${PROFILE.links.github} | LinkedIn ${PROFILE.links.linkedin}`,
     `Languages: ${PROFILE.spokenLanguages.join(" • ")}`,
   ];
 }
