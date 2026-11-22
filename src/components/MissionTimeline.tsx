@@ -62,7 +62,7 @@ export default function MissionTimeline({
             const style = ACCENTS[accentFor(exp)];
 
             return (
-              <article key={exp.id} className="relative">
+              <article key={exp.id} className="scroll-reveal relative">
                 <div
                   className="absolute -left-[29px] top-6 flex h-5 w-5 items-center justify-center rounded-full border-2 border-[#e2e8f0] bg-[#0d1017] md:-left-[33px]"
                   aria-hidden="true"
@@ -193,7 +193,7 @@ export default function MissionTimeline({
             </span>
           </div>
 
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <div className="stagger-grid grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {education.map((edu, idx) => {
               const inProgress = edu.status === "In Progress";
               return (

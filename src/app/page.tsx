@@ -19,6 +19,11 @@ import {
 import ArchitectureInspector from "@/components/ArchitectureInspector";
 import CredentialsSection from "@/components/CredentialsSection";
 import MissionTimeline from "@/components/MissionTimeline";
+import {
+  HeroSpotlightTracker,
+  ScrollRevealObserver,
+  TelemetryTicker,
+} from "@/components/MotionEffects";
 import NodeForgeTerminal from "@/components/NodeForgeTerminal";
 import PixelPortrait from "@/components/PixelPortrait";
 import ProjectsShowcase from "@/components/ProjectsShowcase";
@@ -98,10 +103,14 @@ export default function HomePage() {
       id="main-content"
       className="mx-auto max-w-6xl space-y-14 px-4 py-8 md:px-8 md:py-10"
     >
+      <ScrollRevealObserver />
+      <HeroSpotlightTracker targetId="top" />
+
       <header
         id="top"
-        className="brutal-card hero-panel corner-brackets animate-brutal-enter scroll-mt-20 overflow-hidden p-6 md:p-10"
+        className="brutal-card hero-panel spotlight-surface corner-brackets animate-brutal-enter scroll-mt-20 overflow-hidden p-6 md:p-10"
       >
+        <div aria-hidden="true" className="spotlight-grid-overlay" />
         <div className="relative z-10 grid gap-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center lg:gap-10">
           <div className="min-w-0">
             <div className="flex flex-wrap items-center gap-2.5 sm:gap-3">
@@ -221,7 +230,7 @@ export default function HomePage() {
               </a>
             </div>
 
-            <dl className="mt-8 grid max-w-2xl grid-cols-2 gap-px border-2 border-slate-700 bg-slate-700 sm:grid-cols-4">
+            <dl className="stagger-grid mt-8 grid max-w-2xl grid-cols-2 gap-px border-2 border-slate-700 bg-slate-700 sm:grid-cols-4">
               {HERO_STATS.map((stat) => (
                 <div
                   key={stat.label}
@@ -245,23 +254,7 @@ export default function HomePage() {
         </div>
       </header>
 
-      <div
-        className="overflow-hidden border-y-2 border-slate-700 bg-[#141923] py-2.5 [mask-image:linear-gradient(to_right,transparent,black_6%,black_94%,transparent)]"
-        aria-hidden="true"
-      >
-        <div className="animate-ticker font-mono-tech text-[11px] font-bold tracking-[0.18em] text-slate-300">
-          {[...TICKER_ITEMS, ...TICKER_ITEMS].map((item, i) => (
-            <span
-              key={`${item}-${i}`}
-              className="mx-5 inline-flex items-center gap-3"
-            >
-              <span className="h-1.5 w-1.5 bg-[#2dd4bf]" />
-              {item}
-            </span>
-          ))}
-        </div>
-      </div>
-      <p className="sr-only">Core stack: {TICKER_ITEMS.join(", ")}</p>
+      <TelemetryTicker items={TICKER_ITEMS} />
 
       <section id="awards" className="scroll-mt-20 space-y-5">
         <SectionHeading
@@ -273,7 +266,7 @@ export default function HomePage() {
           accent="amber"
         />
 
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div className="stagger-grid grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {AWARD_HIGHLIGHTS.map((item, idx) => {
             const isTopAward = idx === 0;
             const borderClass =
@@ -356,11 +349,11 @@ export default function HomePage() {
         </div>
       </section>
 
-      <div id="inspector" className="scroll-mt-20">
+      <div id="inspector" className="scroll-reveal scroll-mt-20">
         <ArchitectureInspector projects={PROJECTS} />
       </div>
 
-      <section id="skills" className="scroll-mt-20 space-y-5">
+      <section id="skills" className="scroll-reveal scroll-mt-20 space-y-5">
         <SectionHeading
           index="01"
           title="Technical Capabilities & Stack"
@@ -417,7 +410,7 @@ export default function HomePage() {
 
       <footer
         id="contact"
-        className="brutal-card scroll-mt-20 flex flex-col gap-6 p-6 md:p-8"
+        className="scroll-reveal brutal-card scroll-mt-20 flex flex-col gap-6 p-6 md:p-8"
       >
         <div className="grid gap-6 lg:grid-cols-12 lg:items-start">
           <div className="space-y-3 lg:col-span-7">

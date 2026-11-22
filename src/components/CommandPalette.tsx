@@ -94,6 +94,7 @@ export function CommandPaletteShell({
   children?: ReactNode;
 }) {
   const [open, setOpen] = useState(false);
+  const [closing, setClosing] = useState(false);
   const [query, setQuery] = useState("");
   const [activeIndex, setActiveIndex] = useState(0);
   const [copyFeedback, setCopyFeedback] = useState<string | null>(null);
@@ -336,6 +337,7 @@ export function CommandPaletteShell({
 
   const openPalette = useCallback(() => {
     skipRestoreFocusRef.current = false;
+    setClosing(false);
     if (typeof document !== "undefined") {
       const active = document.activeElement as HTMLElement | null;
       triggerElementRef.current =
@@ -344,8 +346,21 @@ export function CommandPaletteShell({
     setOpen(true);
   }, []);
 
-  const closePalette = useCallback((restoreFocus = true) => {
+  const closePalette = useCallback(async (restoreFocus = true) => {
     skipRestoreFocusRef.current = !restoreFocus;
+    const panel = dialogRef.current;
+    if (panel) {
+      setClosing(true);
+      await new Promise((r) => requestAnimationFrame(() => r(undefined)));
+      const animations = panel.getAnimations();
+      if (animations.length > 0) {
+        await Promise.race([
+          Promise.allSettled(animations.map((a) => a.finished)),
+          new Promise((r) => setTimeout(r, 260)),
+        ]);
+      }
+    }
+    setClosing(false);
     setOpen(false);
     setQuery("");
     setCopyFeedback(null);
@@ -535,12 +550,14 @@ export function CommandPaletteShell({
 
       {open && (
         <div
-          className="fixed inset-0 z-50 flex items-start justify-center bg-black/80 px-3 pt-4 backdrop-blur-sm sm:px-4 sm:pt-16 md:pt-24"
-          onClick={() => closePalette()}
+          data-closing={closing ? "true" : undefined}
+          className="animate-modal-backdrop fixed inset-0 z-50 flex items-start justify-center bg-black/80 px-3 pt-4 backdrop-blur-sm sm:px-4 sm:pt-16 md:pt-24"
+          onClick={() => void closePalette()}
         >
           <div
             ref={dialogRef}
-            className="brutal-card corner-brackets w-full max-w-2xl bg-[#141923] p-3.5 sm:p-4"
+            data-closing={closing ? "true" : undefined}
+            className="animate-modal-panel brutal-card corner-brackets w-full max-w-2xl bg-[#141923] p-3.5 sm:p-4"
             role="dialog"
             aria-modal="true"
             aria-label="Command palette"

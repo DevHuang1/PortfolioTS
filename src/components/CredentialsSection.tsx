@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   ArrowUpRight,
   Award,
@@ -108,6 +108,7 @@ export default function CredentialsSection({
   availableFiles?: string[];
 }) {
   const [selected, setSelected] = useState<SelectedCredential | null>(null);
+  const [closing, setClosing] = useState(false);
   const [activeCategory, setActiveCategory] = useState<string>("ALL");
   const [query, setQuery] = useState<string>("");
 
@@ -115,6 +116,23 @@ export default function CredentialsSection({
   const modalRef = useRef<HTMLDivElement | null>(null);
   const closeButtonRef = useRef<HTMLButtonElement | null>(null);
   const wasOpenRef = useRef(false);
+
+  const closeModal = useCallback(async () => {
+    const modal = modalRef.current;
+    if (modal) {
+      setClosing(true);
+      await new Promise((r) => requestAnimationFrame(() => r(undefined)));
+      const animations = modal.getAnimations();
+      if (animations.length > 0) {
+        await Promise.race([
+          Promise.allSettled(animations.map((a) => a.finished)),
+          new Promise((r) => setTimeout(r, 260)),
+        ]);
+      }
+    }
+    setClosing(false);
+    setSelected(null);
+  }, []);
 
   const availableSet = useMemo(() => new Set(availableFiles), [availableFiles]);
   const totalCount = useMemo(
@@ -161,7 +179,7 @@ export default function CredentialsSection({
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         event.preventDefault();
-        setSelected(null);
+        void closeModal();
         return;
       }
 
@@ -191,7 +209,7 @@ export default function CredentialsSection({
       document.body.style.overflow = previousOverflow;
       window.removeEventListener("keydown", onKeyDown);
     };
-  }, [selected]);
+  }, [selected, closeModal]);
 
   const activeAccent = selected ? ACCENTS[selected.accent] : null;
   const fileName = selected?.hasFile ? selected.credential.fileName : undefined;
@@ -304,7 +322,7 @@ export default function CredentialsSection({
         </div>
       ) : (
         <div
-          className={`grid gap-5 ${
+          className={`grid items-start gap-5 ${
             isSingleGroupView ? "grid-cols-1" : "md:grid-cols-2"
           }`}
         >
@@ -314,7 +332,7 @@ export default function CredentialsSection({
             return (
               <div
                 key={group.category}
-                className={`brutal-card ${accent.card} flex flex-col overflow-hidden`}
+                className={`scroll-reveal brutal-card ${accent.card} flex flex-col overflow-hidden`}
               >
                 <div
                   className={`h-1 w-full ${accent.strip}`}
@@ -445,12 +463,14 @@ export default function CredentialsSection({
 
       {selected && activeAccent ? (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 p-2.5 backdrop-blur-sm sm:p-4"
-          onClick={() => setSelected(null)}
+          data-closing={closing ? "true" : undefined}
+          className="animate-modal-backdrop fixed inset-0 z-50 flex items-center justify-center bg-black/85 p-2.5 backdrop-blur-sm sm:p-4"
+          onClick={() => void closeModal()}
         >
           <div
             ref={modalRef}
-            className="brutal-card relative flex max-h-[92vh] w-full max-w-3xl flex-col overflow-hidden bg-[#141923]"
+            data-closing={closing ? "true" : undefined}
+            className="animate-modal-panel brutal-card relative flex max-h-[92vh] w-full max-w-3xl flex-col overflow-hidden bg-[#141923]"
             role="dialog"
             aria-modal="true"
             aria-labelledby="credential-title"
@@ -512,7 +532,7 @@ export default function CredentialsSection({
               <button
                 ref={closeButtonRef}
                 type="button"
-                onClick={() => setSelected(null)}
+                onClick={() => void closeModal()}
                 className="brutal-btn shrink-0 cursor-pointer bg-[#0d1017] p-1.5 text-white"
                 aria-label="Close credential viewer"
               >
@@ -640,7 +660,7 @@ export default function CredentialsSection({
               </span>
               <button
                 type="button"
-                onClick={() => setSelected(null)}
+                onClick={() => void closeModal()}
                 className={`font-mono-tech inline-flex cursor-pointer items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-slate-300 transition ${activeAccent.linkHover}`}
               >
                 Return to credentials

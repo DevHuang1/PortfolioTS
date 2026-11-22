@@ -231,7 +231,7 @@ export default function ProjectsShowcase({
           </button>
         </div>
       ) : (
-        <div className="grid gap-6 md:grid-cols-2">
+        <div className="stagger-grid grid gap-6 md:grid-cols-2">
           {filteredProjects.map((project) => {
             const accent = ACCENTS[project.accent];
             const index = projects.findIndex((p) => p.id === project.id);
