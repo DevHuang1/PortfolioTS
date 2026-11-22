@@ -19,6 +19,8 @@ import NodeForgeTerminal from "@/components/NodeForgeTerminal";
 import SystemDiagram from "@/components/SystemDiagram";
 import { PROFILE, PROJECTS, type ProjectItem } from "@/data/portfolio";
 
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   return PROJECTS.map((project) => ({ slug: project.id }));
 }

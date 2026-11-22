@@ -49,6 +49,18 @@
   initial-value: 0px;
 }
 
+@property --fade-start {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
+@property --fade-end {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -454,6 +466,79 @@ body::after {
     opacity: 0;
     transform: translateY(-8px);
   }
+}
+
+/* Chrome-tab single-row horizontal strip with scrollability edge fades */
+@keyframes chromeFadeStart {
+  to {
+    --fade-start: var(--fade-size);
+  }
+}
+
+@keyframes chromeFadeEnd {
+  from {
+    --fade-end: var(--fade-size);
+  }
+}
+
+.chrome-tab-strip {
+  --fade-size: 2.25rem;
+  --fade-start: 0px;
+  --fade-end: 0px;
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scroll-snap-type: inline proximity;
+  scroll-padding-inline: var(--fade-size);
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    black var(--fade-start),
+    black calc(100% - var(--fade-end)),
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    black var(--fade-start),
+    black calc(100% - var(--fade-end)),
+    transparent 100%
+  );
+  transition:
+    --fade-start 180ms ease,
+    --fade-end 180ms ease;
+}
+
+@supports (animation-timeline: scroll(self inline)) {
+  .chrome-tab-strip {
+    animation: chromeFadeStart linear both, chromeFadeEnd linear both;
+    animation-timeline: scroll(self inline);
+    animation-range: 0 var(--fade-size), calc(100% - var(--fade-size)) 100%;
+  }
+}
+
+@supports not (animation-timeline: scroll(self inline)) {
+  .chrome-tab-strip.more-start {
+    --fade-start: var(--fade-size);
+  }
+
+  .chrome-tab-strip.more-end {
+    --fade-end: var(--fade-size);
+  }
+}
+
+.chrome-tab {
+  position: relative;
+  flex: none;
+  scroll-snap-align: start;
+}
+
+.chrome-tab[aria-selected="true"]::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  border-block-end: 2px solid var(--tab-accent, var(--accent-cyan));
+  pointer-events: none;
 }
 
 .brutal-card {

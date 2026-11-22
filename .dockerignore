@@ -1,6 +1,7 @@
 .git
 .gitignore
 .next
+out/
 .vscode
 node_modules
 npm-debug.log*
@@ -12,3 +13,4 @@ deploy/
 README.md
 Thuta_Sitt_CV(1).docx
 public/images/IMG_*
+remotion-demo/

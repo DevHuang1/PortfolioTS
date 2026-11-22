@@ -9,7 +9,7 @@ import {
   SKILL_GROUPS,
 } from "@/data/portfolio";
 
-export const dynamic = "force-dynamic";
+export const dynamic = "force-static";
 
 function formatYangonTime(now: Date): string {
   try {

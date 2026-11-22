@@ -1,35 +1,33 @@
-FROM node:22-alpine AS base
+FROM node:22-alpine AS web-builder
 WORKDIR /app
 ENV NEXT_TELEMETRY_DISABLED=1
+ARG NEXT_PUBLIC_SITE_URL=https://thutasitt.dev
+ENV NEXT_PUBLIC_SITE_URL=${NEXT_PUBLIC_SITE_URL}
 
-FROM base AS deps
 RUN apk add --no-cache libc6-compat
 COPY package.json package-lock.json ./
 RUN npm ci
-
-FROM base AS builder
-ARG NEXT_PUBLIC_SITE_URL=https://thutasitt.dev
-ENV NEXT_PUBLIC_SITE_URL=${NEXT_PUBLIC_SITE_URL}
-COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-RUN npm run build
+RUN npm run build && chmod -R a+rX /app/out
 
-FROM base AS runner
-ENV NODE_ENV=production
+FROM golang:1.24-alpine AS go-builder
+WORKDIR /src
+COPY go.mod ./
+COPY cmd ./cmd
+RUN CGO_ENABLED=0 GOOS=linux go build -trimpath -ldflags="-s -w" -o /server ./cmd/server
+
+FROM scratch
 ENV PORT=3000
-ENV HOSTNAME=0.0.0.0
+ENV OUT_DIR=/app/out
 
-RUN addgroup --system --gid 1001 nodejs && \
-    adduser --system --uid 1001 nextjs
+COPY --from=go-builder /server /server
+COPY --from=web-builder /app/out /app/out
 
-COPY --from=builder --chown=nextjs:nodejs /app/public ./public
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-
-USER nextjs
+WORKDIR /app
+USER 65532:65532
 EXPOSE 3000
 
-HEALTHCHECK --interval=30s --timeout=5s --start-period=15s --retries=3 \
-  CMD node -e "fetch('http://127.0.0.1:3000/api/status').then((r) => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"
+HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \
+  CMD ["/server", "-healthcheck"]
 
-CMD ["node", "server.js"]
+ENTRYPOINT ["/server"]

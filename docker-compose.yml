@@ -8,25 +8,17 @@ services:
     container_name: thutasitt-portfolio
     restart: unless-stopped
     ports:
-      # Bind only to loopback so Nginx handles TLS/domain routing alongside other VPS apps
+      # Bind only to loopback so Caddy/Nginx handles TLS/domain routing alongside other VPS apps
       - "127.0.0.1:${HOST_PORT:-3010}:3000"
     environment:
-      NODE_ENV: production
-      HOSTNAME: "0.0.0.0"
       PORT: "3000"
-      NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-https://thutasitt.dev}
+      OUT_DIR: "/app/out"
     healthcheck:
-      test:
-        [
-          "CMD",
-          "node",
-          "-e",
-          "fetch('http://127.0.0.1:3000/api/status').then((r) => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))",
-        ]
+      test: ["CMD", "/server", "-healthcheck"]
       interval: 30s
       timeout: 5s
       retries: 3
-      start_period: 15s
+      start_period: 5s
     logging:
       driver: json-file
       options:
