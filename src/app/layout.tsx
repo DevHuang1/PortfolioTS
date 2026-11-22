@@ -42,7 +42,6 @@ export const metadata: Metadata = {
     "Docker",
     "Linux VPS",
     "Spring Boot",
-    "Spring Boot",
     "Three.js",
     "Yangon",
     "UIT",

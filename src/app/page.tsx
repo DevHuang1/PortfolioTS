@@ -86,6 +86,15 @@ export default function HomePage() {
   const availableFiles = getAvailableCertificates();
   const portraitSrc = getPortraitSrc();
   const phoneHref = `tel:${PROFILE.links.phone.replace(/\s+/g, "")}`;
+  const totalCredentialCount = CREDENTIALS.reduce(
+    (sum, group) => sum + group.items.length,
+    0
+  );
+  const flagshipRepoCount = PROJECTS.reduce(
+    (sum, project) => sum + (project.secondaryRepoUrl ? 2 : 1),
+    0
+  );
+  const totalRepoCount = flagshipRepoCount + ADDITIONAL_REPOS.length;
 
   return (
     <main
@@ -278,7 +287,7 @@ export default function HomePage() {
           index="00"
           title="Awards & International Certificates"
           subtitle="NASA Space Apps Challenge 2026 Yangon Youth Scientific Excellence Award (Myanmar Space Agency) alongside verified international credentials from Stanford/DeepLearning.AI, UNESCO, ASEAN/MCMC, AWS, IBM, Anthropic, ITPEC, WHO, and UNICEF."
-          badge="AWARD WINNER • 37 CERTS"
+          badge={`AWARD WINNER • ${totalCredentialCount} CERTS`}
           icon={Trophy}
           accent="amber"
         />
@@ -391,7 +400,9 @@ export default function HomePage() {
           index="02"
           title="Experience & Education"
           subtitle="EdTech founding, student engineering leadership, field research, academic training, and matriculation tutoring."
-          badge="04 ROLES • 06 PROGRAMS"
+          badge={`${String(EXPERIENCE.length).padStart(2, "0")} ROLES • ${String(
+            EDUCATION.length
+          ).padStart(2, "0")} PROGRAMS`}
           icon={Briefcase}
           accent="amber"
         />
@@ -402,8 +413,8 @@ export default function HomePage() {
         <SectionHeading
           index="03"
           title="Flagship Systems & GitHub Archive"
-          subtitle="All 15 flagship systems (16 repositories) plus 8 curated additional repositories — 24 GitHub builds in full."
-          badge="15 FLAGSHIPS • 24 REPOS"
+          subtitle={`All ${PROJECTS.length} flagship systems (${flagshipRepoCount} repositories) plus ${ADDITIONAL_REPOS.length} curated additional repositories — ${totalRepoCount} GitHub builds in full.`}
+          badge={`${PROJECTS.length} FLAGSHIPS • ${totalRepoCount} REPOS`}
           icon={Cpu}
           accent="cyan"
         />

@@ -1131,8 +1131,8 @@ export const PROJECTS: ProjectItem[] = [
         url: "https://devpost.com/software/embervale/updates/833820",
       },
       {
-        label: "Shipaton Certificates",
-        url: "https://www.shipaton.com/certificates",
+        label: "Verify Shipaton Certificate",
+        url: "https://shipaton.com/verify/SH26-D3N0-GD99-BXEG",
       },
     ],
     metrics: [
@@ -1524,6 +1524,19 @@ export const CREDENTIALS: CredentialGroup[] = [
         credentialId: "CMU18DGUN005PS601QW6MF7AG",
         signatory: "Pawel Czech (Founder, NativelyAI)",
         fileName: "Alpaca AI Trading Agents Hackathon-certificate.pdf",
+      },
+      {
+        title:
+          "RevenueCat Shipaton 2026 — Certificate of Participation (Embervale)",
+        issuer: "RevenueCat",
+        year: "2026",
+        date: "Sep 2026",
+        type: "Hackathon",
+        role: "Solo Developer — Embervale",
+        credentialId: "SH26-D3N0-GD99-BXEG",
+        verifyUrl: "https://shipaton.com/verify/SH26-D3N0-GD99-BXEG",
+        signatory: "Charles Chapman (Captain of Shipaton)",
+        fileName: "shipaton-2026-certificate.pdf",
       },
       {
         title: "Pixel Forge AI Hackathon — Certificate of Participation",
