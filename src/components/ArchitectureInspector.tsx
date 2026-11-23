@@ -17,7 +17,6 @@ import {
   Copy,
   ExternalLink,
   GitBranch,
-  Globe,
   Layers,
   Lock,
   Monitor,
@@ -31,7 +30,7 @@ import SystemDiagram from "@/components/SystemDiagram";
 import type { ProjectCategory, ProjectItem } from "@/data/portfolio";
 
 type FilterKey = "ALL" | "FEATURED" | ProjectCategory;
-type ViewportMode = "preview" | "architecture" | "demo" | "live";
+type ViewportMode = "preview" | "architecture" | "demo";
 
 const ACCENT_MAP = {
   cyan: {
@@ -196,18 +195,11 @@ export default function ArchitectureInspector({
   );
   const omniboxUrl = active.liveUrl ?? active.repoUrl;
   const effectiveMode: ViewportMode =
-    viewportMode === "live" && !active.liveUrl
-      ? "preview"
-      : viewportMode === "demo" && !hasDemo(active.id)
-        ? "preview"
-        : viewportMode;
+    viewportMode === "demo" && !hasDemo(active.id) ? "preview" : viewportMode;
 
   const selectProject = (nextProject: ProjectItem) => {
     setSelectedId(nextProject.id);
     setCopiedUrl(false);
-    if (!nextProject.liveUrl && viewportMode === "live") {
-      setViewportMode("preview");
-    }
     if (!hasDemo(nextProject.id) && viewportMode === "demo") {
       setViewportMode("preview");
     }
@@ -489,21 +481,6 @@ export default function ArchitectureInspector({
               Demo
             </button>
           ) : null}
-          {active.liveUrl ? (
-            <button
-              type="button"
-              aria-pressed={effectiveMode === "live"}
-              onClick={() => setViewportMode("live")}
-              className={`font-mono-tech inline-flex cursor-pointer items-center gap-1 border px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider transition ${
-                effectiveMode === "live"
-                  ? "border-[#fb7185] bg-[#fb7185] text-[#0d1017]"
-                  : "border-slate-700 bg-[#0d1017] text-slate-300 hover:border-slate-500"
-              }`}
-            >
-              <Globe className="h-3 w-3" aria-hidden="true" />
-              Live Frame
-            </button>
-          ) : null}
         </div>
       </div>
 
@@ -515,32 +492,7 @@ export default function ArchitectureInspector({
         aria-labelledby={`chrome-tab-${active.id}`}
         className="animate-brutal-enter bg-[#0a0d14] p-4 sm:p-6 md:p-7"
       >
-        {effectiveMode === "live" && active.liveUrl ? (
-          <div className="space-y-3">
-            <div className="flex flex-wrap items-center justify-between gap-2 border border-slate-700 bg-[#141923] px-3 py-2">
-              <span className="font-mono-tech text-[10px] uppercase tracking-wider text-slate-300">
-                Live Embedded Frame // {active.liveUrl}
-              </span>
-              <a
-                href={active.liveUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-mono-tech inline-flex items-center gap-1 text-[10px] font-bold uppercase text-[#2dd4bf] hover:underline"
-              >
-                Open Full Tab
-                <ExternalLink className="h-3 w-3" aria-hidden="true" />
-              </a>
-            </div>
-            <div className="h-[460px] w-full overflow-hidden border-2 border-slate-700 bg-[#0d1017]">
-              <iframe
-                src={active.liveUrl}
-                title={`${active.name} live preview`}
-                className="h-full w-full"
-                loading="lazy"
-              />
-            </div>
-          </div>
-        ) : effectiveMode === "demo" ? (
+        {effectiveMode === "demo" ? (
           <ProjectDemo projectId={active.id} />
         ) : effectiveMode === "architecture" ? (
           <div className="space-y-6">
