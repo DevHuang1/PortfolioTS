@@ -141,7 +141,7 @@ export const PROFILE = {
   domain: "thutasitt.dev",
   designPreference: "Dark-mode-first aesthetic",
   summary:
-    "NASA Space Apps Challenge 2026 Yangon Youth Scientific Excellence Award winner (Myanmar Space Agency) and Computer Science undergraduate (B.C.Sc., 2024–2028) at UIT, Yangon. Specializes in full-stack web engineering, multi-agent AI systems, and applied machine learning across 3D space simulation, geospatial intelligence, real-time fraud detection, and edtech.",
+    "NASA Space Apps Challenge 2026 Yangon Youth Scientific Excellence Award winner (Myanmar Space Agency), ITPEC FE & IP certified engineer, and Computer Science undergraduate (B.C.Sc., 2024–2028) at UIT, Yangon. Specializes in full-stack web engineering, multi-agent AI systems, and applied machine learning across 3D space simulation, geospatial intelligence, real-time fraud detection, and edtech.",
   spokenLanguages: [
     "English (Fluent)",
     "Burmese (Native)",
@@ -1421,11 +1421,11 @@ export const AWARD_HIGHLIGHTS: AwardHighlight[] = [
   {
     id: "itpec-ibm-anthropic-un",
     badge: "GLOBAL & NATIONAL CERTS",
-    title: "ITPEC IP (MCF) • IBM DevOps • Anthropic MCP • WHO & UNICEF",
+    title: "ITPEC FE & IP (MCF) • IBM DevOps • Anthropic MCP • WHO & UNICEF",
     issuer: "ITPEC / IBM / Anthropic / WHO (IARC) / UNICEF",
     date: "2025 – 2026",
     detail:
-      "National ITPEC IT Passport (ID: MMIP25S00205), IBM Introduction to DevOps, Anthropic Model Context Protocol, plus WHO IARC and UNICEF international certificates.",
+      "National ITPEC Fundamental Information Technology Engineer (FE, Autumn 2026) and IT Passport (IP, ID: MMIP25S00205), IBM Introduction to DevOps, Anthropic Model Context Protocol, plus WHO IARC and UNICEF international certificates.",
     accent: "coral",
   },
 ];
@@ -1691,6 +1691,15 @@ export const CREDENTIALS: CredentialGroup[] = [
     accent: "cyan",
     items: [
       {
+        title:
+          "Fundamental Information Technology Engineer Examination (ITPEC FE)",
+        issuer: "ITPEC & Myanmar Computer Federation (MCF)",
+        year: "2026",
+        date: "Nov 2026 (Autumn 2026 Exam)",
+        type: "National Certification",
+        note: "Passed ITPEC Fundamental Information Technology Engineer (FE) national examination (Autumn 2026 cohort; official certificate pending).",
+      },
+      {
         title: "Introduction to DevOps",
         issuer: "IBM (Coursera)",
         year: "2026",
@@ -1865,7 +1874,7 @@ export const HERO_STATS: HeroStat[] = [
 
 export const TICKER_ITEMS: string[] = [
   "NASA SPACE APPS 2026 YANGON // YOUTH SCIENTIFIC EXCELLENCE AWARD",
-  "STANFORD & DEEPLEARNING.AI // ML SPECIALIZATION",
+  "ITPEC FE & IP CERTIFIED // STANFORD & DEEPLEARNING.AI ML",
   "ASEAN GEOAI EXPLORER // UNESCO YOUTH HACKATHON",
   "AWS GENAI & ML TRACK // IBM DEVOPS // ANTHROPIC MCP",
   "NEXT.JS 16 // REACT 19 // TYPESCRIPT // PYTHON",
