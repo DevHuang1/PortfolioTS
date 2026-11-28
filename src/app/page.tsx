@@ -123,6 +123,15 @@ export default function HomePage() {
                   NASA Space Apps 2026 Yangon — Youth Scientific Excellence Award
                 </span>
               </a>
+              <a
+                href="#awards"
+                className="font-mono-tech inline-flex max-w-full items-center gap-2 border-2 border-[#2dd4bf] bg-[#2dd4bf]/15 px-2.5 py-1 text-[10px] font-bold uppercase leading-relaxed tracking-[0.12em] text-[#2dd4bf] transition hover:bg-[#2dd4bf] hover:text-[#0d1017]"
+              >
+                <Award className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+                <span className="break-words">
+                  ITPEC Fundamental IT Engineer (FE) Certified
+                </span>
+              </a>
               <span className="font-mono-tech inline-flex max-w-full items-center gap-2 border-2 border-[#2dd4bf] bg-[#2dd4bf]/10 px-2.5 py-1 text-[10px] font-bold uppercase leading-relaxed tracking-[0.12em] text-[#2dd4bf]">
                 <span className="relative flex h-1.5 w-1.5 shrink-0">
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#2dd4bf] opacity-70" />
@@ -269,6 +278,7 @@ export default function HomePage() {
         <div className="stagger-grid grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {AWARD_HIGHLIGHTS.map((item, idx) => {
             const isTopAward = idx === 0;
+            const isItpecFe = item.id === "itpec-fe";
             const borderClass =
               item.accent === "amber"
                 ? "brutal-card-amber"
@@ -288,7 +298,9 @@ export default function HomePage() {
                 className={`brutal-card ${borderClass} flex flex-col justify-between p-5 ${
                   isTopAward
                     ? "md:col-span-2 lg:col-span-3 border-[#facc15] bg-gradient-to-r from-[#facc15]/10 via-[#141923] to-[#141923]"
-                    : ""
+                    : isItpecFe
+                      ? "border-[#2dd4bf] bg-gradient-to-br from-[#2dd4bf]/12 via-[#141923] to-[#141923]"
+                      : ""
                 }`}
               >
                 <div>

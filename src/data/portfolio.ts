@@ -141,7 +141,7 @@ export const PROFILE = {
   domain: "thutasitt.dev",
   designPreference: "Dark-mode-first aesthetic",
   summary:
-    "NASA Space Apps Challenge 2026 Yangon Youth Scientific Excellence Award winner (Myanmar Space Agency), ITPEC FE & IP certified engineer, and Computer Science undergraduate (B.C.Sc., 2024–2028) at UIT, Yangon. Specializes in full-stack web engineering, multi-agent AI systems, and applied machine learning across 3D space simulation, geospatial intelligence, real-time fraud detection, and edtech.",
+    "NASA Space Apps Challenge 2026 Yangon Youth Scientific Excellence Award winner (Myanmar Space Agency), ITPEC Fundamental Information Technology Engineer (FE) certified, and Computer Science undergraduate (B.C.Sc., 2024–2028) at UIT, Yangon. Specializes in full-stack web engineering, multi-agent AI systems, and applied machine learning across 3D space simulation, geospatial intelligence, real-time fraud detection, and edtech.",
   spokenLanguages: [
     "English (Fluent)",
     "Burmese (Native)",
@@ -1378,6 +1378,16 @@ export const AWARD_HIGHLIGHTS: AwardHighlight[] = [
     accent: "amber",
   },
   {
+    id: "itpec-fe",
+    badge: "NATIONAL IT ENGINEER • ITPEC FE",
+    title: "ITPEC Fundamental Information Technology Engineer (FE)",
+    issuer: "ITPEC (IPA Japan Standard) & Myanmar Computer Federation (MCF)",
+    date: "Nov 2026",
+    detail:
+      "Passed the national Fundamental Information Technology Engineer (FE) examination (Autumn 2026) — validating algorithms, data structures, computer systems, databases, networking, security, and software engineering under Japan's IPA/ITPEC standard. Also holds ITPEC IT Passport (IP, ID: MMIP25S00205).",
+    accent: "cyan",
+  },
+  {
     id: "stanford-deeplearning-ml",
     badge: "INTERNATIONAL SPECIALIZATION",
     title: "Machine Learning Specialization",
@@ -1385,7 +1395,7 @@ export const AWARD_HIGHLIGHTS: AwardHighlight[] = [
     date: "Jul 2026",
     detail:
       "3-course verified specialization covering supervised learning, neural networks, unsupervised learning, recommenders, and reinforcement learning (ID: EP5HKLWLB11N).",
-    accent: "cyan",
+    accent: "amber",
     verifyUrl: "https://coursera.org/verify/specialization/EP5HKLWLB11N",
   },
   {
@@ -1419,13 +1429,13 @@ export const AWARD_HIGHLIGHTS: AwardHighlight[] = [
     accent: "amber",
   },
   {
-    id: "itpec-ibm-anthropic-un",
-    badge: "GLOBAL & NATIONAL CERTS",
-    title: "ITPEC FE & IP (MCF) • IBM DevOps • Anthropic MCP • WHO & UNICEF",
-    issuer: "ITPEC / IBM / Anthropic / WHO (IARC) / UNICEF",
+    id: "ibm-anthropic-un",
+    badge: "GLOBAL TECH & UN CERTS",
+    title: "IBM DevOps & SE • Anthropic MCP • WHO & UNICEF",
+    issuer: "IBM / Anthropic / Google / MongoDB / WHO (IARC) / UNICEF",
     date: "2025 – 2026",
     detail:
-      "National ITPEC Fundamental Information Technology Engineer (FE, Autumn 2026) and IT Passport (IP, ID: MMIP25S00205), IBM Introduction to DevOps, Anthropic Model Context Protocol, plus WHO IARC and UNICEF international certificates.",
+      "IBM Introduction to DevOps & Software Engineering, Anthropic Model Context Protocol (MCP), Google Git & GitHub, MongoDB, plus WHO IARC and UNICEF international certificates.",
     accent: "coral",
   },
 ];
@@ -1874,7 +1884,8 @@ export const HERO_STATS: HeroStat[] = [
 
 export const TICKER_ITEMS: string[] = [
   "NASA SPACE APPS 2026 YANGON // YOUTH SCIENTIFIC EXCELLENCE AWARD",
-  "ITPEC FE & IP CERTIFIED // STANFORD & DEEPLEARNING.AI ML",
+  "ITPEC FUNDAMENTAL IT ENGINEER (FE) CERTIFIED // IPA JAPAN & MCF",
+  "STANFORD & DEEPLEARNING.AI // ML SPECIALIZATION",
   "ASEAN GEOAI EXPLORER // UNESCO YOUTH HACKATHON",
   "AWS GENAI & ML TRACK // IBM DEVOPS // ANTHROPIC MCP",
   "NEXT.JS 16 // REACT 19 // TYPESCRIPT // PYTHON",
